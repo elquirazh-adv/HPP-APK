@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HPP Usaha — Elquirazh ADV</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="brand">HPP Usaha</div>
+      <div class="muted">Elquirazh ADV • kalkulator HPP produksi</div>
+    </div>
+    <button class="ghost" id="resetDataBtn">Reset Data Awal</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Hitung HPP tanpa feeling</h1>
+        <p>Versi awal dibuat untuk memetakan 4 proses produksi: Indoor, Cutting, Laser CO₂, dan Docu A3+.</p>
+      </div>
+      <div class="hero-badge">Data tersimpan di browser</div>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="calculator">Kalkulator</button>
+      <button class="tab" data-tab="materials">Material</button>
+      <button class="tab" data-tab="machines">Mesin & Biaya</button>
+      <button class="tab" data-tab="benchmarks">Harga Referensi</button>
+    </nav>
+
+    <section id="calculator" class="tab-panel active">
+      <div class="card">
+        <div class="grid two">
+          <label>
+            Nama produk
+            <input id="productName" placeholder="Contoh: Sticker Label Cromo Kisscut" />
+          </label>
+          <label>
+            Proses produksi
+            <select id="machineSelect"></select>
+          </label>
+        </div>
+      </div>
+
+      <div id="dynamicForm"></div>
+      <div id="result"></div>
+    </section>
+
+    <section id="materials" class="tab-panel">
+      <div class="section-head">
+        <div>
+          <h2>Material</h2>
+          <p class="muted">Harga dapat diubah tanpa mengubah rumus aplikasi.</p>
+        </div>
+        <button class="primary" id="addMaterialBtn">+ Material</button>
+      </div>
+      <div class="card table-wrap">
+        <table>
+          <thead><tr><th>Nama</th><th>Mesin</th><th>Harga beli</th><th>Satuan</th><th>Catatan</th><th></th></tr></thead>
+          <tbody id="materialsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="machines" class="tab-panel">
+      <div class="section-head">
+        <div>
+          <h2>Mesin & biaya</h2>
+          <p class="muted">Parameter biaya yang belum pasti dibuat editable.</p>
+        </div>
+      </div>
+      <div id="machinesList" class="stack"></div>
+    </section>
+
+    <section id="benchmarks" class="tab-panel">
+      <div class="section-head">
+        <div>
+          <h2>Harga referensi</h2>
+          <p class="muted">Dipisahkan dari HPP. Data ini terutama untuk benchmark broker/member.</p>
+        </div>
+      </div>
+      <div class="card table-wrap">
+        <table>
+          <thead><tr><th>Material/produk</th><th>1–100</th><th>101–500</th><th>≥501</th><th>Catatan</th></tr></thead>
+          <tbody id="benchmarksTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-box">
+      <div class="modal-head"><h3 id="modalTitle">Edit</h3><button class="icon" id="closeModal">×</button></div>
+      <div id="modalBody"></div>
+      <div class="modal-actions"><button class="ghost" id="cancelModal">Batal</button><button class="primary" id="saveModal">Simpan</button></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
