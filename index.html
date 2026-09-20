@@ -1,442 +1,1516 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HPP Usaha - Elquirazh ADV</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>HPP Elquirazh — Kalkulator Biaya Produksi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f4f5f7;--card:#fff;--text:#172033;--muted:#6b7280;
-  --line:#e5e7eb;--primary:#f4511e;--primary2:#e94a17;
-  --dark:#17191d;--dark2:#24272d;--green:#15956b;--red:#e5484d;
-  --yellow:#fff5d8;--radius:14px;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select{font:inherit}
-.topbar{background:#fff;border-bottom:1px solid var(--line);padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px;position:sticky;top:0;z-index:20}
-.brand{font-weight:800;font-size:20px}.muted{color:var(--muted);font-size:13px}
-.container{max-width:1000px;margin:28px auto;padding:0 18px}
-.hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px}
-.hero h1{margin:0 0 7px;font-size:28px}.hero p{margin:0;color:var(--muted)}
-.badge{background:#fff1eb;color:#d94313;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:700;white-space:nowrap}
-.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
-.tab{border:0;background:#e9edf1;padding:10px 14px;border-radius:10px;font-weight:700;color:#475569;cursor:pointer}
-.tab.active{background:var(--primary);color:white}
-.panel{display:none}.panel.active{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
-.card h2,.card h3{margin:0 0 15px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}
-input,select{width:100%;border:1px solid #d8dde5;border-radius:9px;padding:10px 11px;background:#fff;outline:none}
-input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #f4511e18}
-.field{margin-bottom:12px}
-.note{background:var(--yellow);border-radius:10px;padding:11px 13px;font-size:12px;color:#7a5a10;line-height:1.5;margin-top:5px}
-.btn{border:0;border-radius:9px;padding:10px 15px;font-weight:800;cursor:pointer}
-.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary2)}
-.btn-ghost{background:#eef1f4;color:#344054}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.result{background:var(--dark);color:white;border-radius:16px;padding:18px}
-.result h2{margin:0 0 14px}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-.metric{background:var(--dark2);border-radius:10px;padding:12px}
-.metric small{display:block;color:#aeb4bf;font-size:11px;margin-bottom:6px}
-.metric strong{font-size:18px}.metric .bad{color:#ff7278}
-.detail{background:#fff;color:#222;border-radius:10px;margin-top:12px;padding:12px;font-size:12px;line-height:1.7}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left}
-th{background:#f8fafc}
-.num{text-align:right}
-.empty{padding:20px;text-align:center;color:var(--muted)}
-.small{font-size:11px;color:var(--muted)}
-.formula{font-family:ui-monospace,Consolas,monospace;background:#f5f7fa;padding:10px;border-radius:9px;margin-top:8px}
-@media(max-width:720px){
- .grid2,.grid3,.metrics{grid-template-columns:1fr}
- .topbar{align-items:flex-start}.hero{padding:18px}
- .container{margin-top:18px}
-}
+  :root {
+    --paper: #FAF8F3;
+    --surface: #FFFFFF;
+    --surface-2: #F1EEE6;
+    --ink: #232120;
+    --muted: #726A5B;
+    --line: #E1DCCF;
+    --line-strong: #C9C2AF;
+    --accent: #C1481F;
+    --accent-ink: #FFF7EE;
+    --good: #2F7D5C;
+    --bad: #B0202F;
+    --indoor: #2D5C8A;
+    --cutting: #C1481F;
+    --laser: #B0202F;
+    --docu: #2F7D5C;
+    --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    --radius: 3px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #17150F;
+      --surface: #201D16;
+      --surface-2: #29251C;
+      --ink: #F1ECE0;
+      --muted: #A79A7F;
+      --line: #3B3524;
+      --line-strong: #4C4530;
+      --accent: #E37A3E;
+      --accent-ink: #1A1206;
+      --good: #6FBE96;
+      --bad: #E27080;
+      --indoor: #7FB1DE;
+      --cutting: #E37A3E;
+      --laser: #E27080;
+      --docu: #6FBE96;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #17150F;
+    --surface: #201D16;
+    --surface-2: #29251C;
+    --ink: #F1ECE0;
+    --muted: #A79A7F;
+    --line: #3B3524;
+    --line-strong: #4C4530;
+    --accent: #E37A3E;
+    --accent-ink: #1A1206;
+    --good: #6FBE96;
+    --bad: #E27080;
+    --indoor: #7FB1DE;
+    --cutting: #E37A3E;
+    --laser: #E27080;
+    --docu: #6FBE96;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.45;
+  }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  a { color: inherit; }
+
+  /* ---------- header ---------- */
+  header.top {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 18px 20px calc(18px + env(safe-area-inset-top, 0px)/2);
+    padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  :root[data-theme="dark"] header.top, @media (prefers-color-scheme: dark) { }
+  header.top .mark { display: flex; align-items: baseline; gap: 10px; }
+  header.top .mark .glyph {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: .08em;
+    border: 1px solid rgba(250,248,243,.35);
+    padding: 3px 7px;
+    border-radius: var(--radius);
+    color: var(--accent);
+  }
+  header.top h1 { font-size: 19px; margin: 0; font-weight: 600; letter-spacing: -.01em; }
+  header.top p { margin: 2px 0 0; font-size: 12.5px; color: rgba(250,248,243,.6); }
+  header.top .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  button { font-family: inherit; cursor: pointer; }
+  .btn {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    padding: 8px 13px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    transition: background .12s ease, border-color .12s ease;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn.primary:hover { filter: brightness(1.06); }
+  .btn.ghost-inv { background: transparent; border-color: rgba(250,248,243,.35); color: var(--paper); }
+  .btn.ghost-inv:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.small { padding: 5px 9px; font-size: 12px; }
+  .btn.danger { color: var(--bad); border-color: var(--bad); background: transparent; }
+  .btn.icon-btn { padding: 5px 8px; line-height: 1; }
+
+  /* ---------- tabs (folder style) ---------- */
+  nav.tabs {
+    display: flex;
+    gap: 4px;
+    padding: 14px 20px 0;
+    max-width: 980px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+  nav.tabs button {
+    border: 1px solid var(--line);
+    border-bottom: none;
+    background: var(--surface-2);
+    color: var(--muted);
+    padding: 9px 16px 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    border-radius: 4px 4px 0 0;
+    white-space: nowrap;
+    position: relative;
+    top: 1px;
+  }
+  nav.tabs button.active {
+    background: var(--surface);
+    color: var(--ink);
+    border-color: var(--line-strong);
+    border-bottom: 1px solid var(--surface);
+  }
+
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-top: none;
+    padding: 22px;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  h2.section-title { font-size: 16px; margin: 0 0 3px; font-weight: 600; }
+  p.hint { color: var(--muted); font-size: 12.5px; margin: 0 0 18px; }
+
+  .field-row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .field { flex: 1 1 200px; display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .field .subnote { font-size: 11px; color: var(--muted); opacity:.8; }
+  input, select, textarea {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    padding: 8px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+    width: 100%;
+  }
+  select { font-family: var(--font-display); }
+  input:focus, select:focus, textarea:focus, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  .divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+
+  .process-picker { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 18px; }
+  @media (max-width: 640px) { .process-picker { grid-template-columns: repeat(2,1fr); } }
+  .proc-card {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    padding: 10px 10px 9px;
+    border-radius: var(--radius);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .proc-card .chip { width: 18px; height: 4px; border-radius: 2px; }
+  .proc-card span.name { font-size: 12.5px; font-weight: 600; }
+  .proc-card span.unit { font-size: 11px; color: var(--muted); }
+  .proc-card.active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+
+  /* extras / line items */
+  .extras-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
+  .extra-row { display: grid; grid-template-columns: 1fr 90px 110px 30px; gap: 8px; align-items: center; }
+  @media (max-width: 640px) { .extra-row { grid-template-columns: 1fr 70px 90px 26px; } }
+
+  /* ---------- ledger result ---------- */
+  .ledger {
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-top: 22px;
+  }
+  .ledger h3 { margin: 0 0 2px; font-size: 14px; }
+  .ledger .prod-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .ledger-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--line-strong);
+    font-size: 13px;
+  }
+  .ledger-row .lbl { color: var(--muted); white-space: nowrap; }
+  .ledger-row .fill { flex: 1; border-bottom: none; }
+  .ledger-row .val { font-family: var(--font-mono); white-space: nowrap; }
+  .ledger-row.total { border-bottom: none; border-top: 2px solid var(--ink); margin-top: 4px; padding-top: 10px; font-size: 15px; font-weight: 600; }
+  .ledger-row.sell { color: var(--accent); font-size: 16px; font-weight: 700; }
+  .ledger-row.profit .val { color: var(--good); }
+  .ledger-section-label { font-size: 11px; text-transform: none; color: var(--muted); margin: 14px 0 2px; letter-spacing: .01em; }
+
+  .warn-box {
+    background: rgba(176,32,47,.08);
+    border: 1px solid var(--bad);
+    color: var(--bad);
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 12.5px;
+    margin-bottom: 14px;
+  }
+
+  /* ---------- tables ---------- */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line-strong); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line-strong);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-2); }
+  .num-cell { font-family: var(--font-mono); white-space: nowrap; }
+  .row-actions { display: flex; gap: 6px; white-space: nowrap; }
+  .proc-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--muted);
+  }
+  .proc-tag .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+  .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+
+  .machine-card {
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .machine-card .mhead { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .machine-card .mhead .name { font-weight: 600; font-size: 14px; }
+  .machine-cost-line { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); }
+  .machine-cost-line b { color: var(--ink); font-family: var(--font-mono); }
+
+  .empty-state {
+    text-align: center;
+    padding: 30px 10px;
+    color: var(--muted);
+    font-size: 13px;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+  }
+
+  /* ---------- modal ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(20,17,10,.5);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; z-index: 100;
+  }
+  .modal-overlay.hidden { display: none; }
+  .modal-box {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    width: 100%; max-width: 460px;
+    max-height: 88vh; overflow-y: auto;
+    padding: 20px;
+  }
+  .modal-box h3 { margin: 0 0 14px; font-size: 15px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+  footer.foot {
+    text-align: center; font-size: 11.5px; color: var(--muted);
+    padding: 24px 20px calc(24px + env(safe-area-inset-bottom,0px));
+  }
+
+  .history-item { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .history-item .hname { font-weight: 600; font-size: 13px; }
+  .history-item .hmeta { font-size: 11.5px; color: var(--muted); }
+  .history-item .hval { font-family: var(--font-mono); font-weight: 600; }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--paper); padding: 10px 18px;
+    border-radius: var(--radius); font-size: 13px; z-index: 200;
+    opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  }
+  .toast.show { opacity: 1; }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div>
-    <div class="brand">HPP Usaha</div>
-    <div class="muted">Elquirazh ADV · kalkulator HPP produksi</div>
+<header class="top">
+  <div class="mark">
+    <span class="glyph">HPP</span>
+    <div>
+      <h1>Kalkulator HPP — Elquirazh ADV</h1>
+      <p>Indoor · Cutting · Laser CO₂ · Docu A3+ — biaya bahan, mesin, tenaga kerja &amp; overhead dihitung per satuan</p>
+    </div>
   </div>
-  <button class="btn btn-ghost" id="resetBtn">Reset Data Awal</button>
+  <div class="actions">
+    <button class="btn ghost-inv small" id="btnExport">Ekspor data</button>
+    <button class="btn ghost-inv small" id="btnImport">Impor data</button>
+    <input type="file" id="fileImport" accept="application/json" style="display:none" />
+    <button class="btn ghost-inv small" id="btnReset">Reset ke awal</button>
+  </div>
 </header>
 
-<main class="container">
-  <section class="hero">
-    <div style="display:flex;justify-content:space-between;gap:15px;align-items:flex-start">
+<nav class="tabs">
+  <button class="tab active" data-tab="calculator">Kalkulator</button>
+  <button class="tab" data-tab="materials">Material</button>
+  <button class="tab" data-tab="machines">Mesin</button>
+  <button class="tab" data-tab="settings">Overhead &amp; Margin</button>
+  <button class="tab" data-tab="benchmarks">Harga Referensi</button>
+  <button class="tab" data-tab="acrylic">Referensi Acrylic</button>
+  <button class="tab" data-tab="history">Riwayat</button>
+</nav>
+
+<main>
+  <section class="panel tab-panel active" id="tab-calculator">
+    <h2 class="section-title">Pilih proses produksi</h2>
+    <p class="hint">Formula menghitung bahan, mesin, tenaga kerja, overhead, dan biaya finishing. Harga jual Cutting dapat diatur fleksibel per cm².</p>
+    <div class="process-picker" id="processPicker"></div>
+    <div class="note" style="margin:0 0 18px;padding:10px 12px;border:1px solid var(--line-strong);background:var(--surface-2);font-size:12px;">
+      <b>Logika Cutting:</b> ukuran dimasukkan dalam cm, lalu harga jual dihitung dari luas × harga/cm².
+      Contoh <span class="num">10 × 10 × Rp50 = Rp5.000</span>. Jumlah warna hanya informasi produksi dan tidak otomatis menggandakan harga.
+    </div>
+    <div id="calcForm"></div>
+    <div id="calcResult"></div>
+  </section>
+
+  <section class="panel tab-panel" id="tab-materials">
+    <div class="section-head">
       <div>
-        <h1>Hitung HPP tanpa feeling</h1>
-        <p>Versi revisi untuk memetakan proses Indoor, Cutting, Laser CO₂, dan Docu A3+.</p>
+        <h2 class="section-title">Material</h2>
+        <p class="hint" style="margin:0">Harga bisa diubah kapan saja tanpa mengubah rumus perhitungan.</p>
       </div>
-      <div class="badge">Data tersimpan di browser</div>
+      <button class="btn primary" id="addMaterialBtn">+ Material</button>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Nama</th><th>Proses</th><th>Harga</th><th>Satuan</th><th>Susut/waste</th><th>Catatan</th><th></th></tr></thead>
+        <tbody id="materialsTable"></tbody>
+      </table>
     </div>
   </section>
 
-  <nav class="tabs">
-    <button class="tab active" data-tab="calculator">Kalkulator</button>
-    <button class="tab" data-tab="materials">Material</button>
-    <button class="tab" data-tab="machines">Mesin & Biaya</button>
-    <button class="tab" data-tab="references">Harga Referensi</button>
-  </nav>
-
-  <!-- KALKULATOR -->
-  <section id="calculator" class="panel active">
-    <div class="card">
-      <div class="grid2">
-        <div class="field">
-          <label>Nama produk</label>
-          <input id="productName" placeholder="Contoh: Sticker Label Cromo Kisscut">
-        </div>
-        <div class="field">
-          <label>Proses produksi</label>
-          <select id="process">
-            <option value="cutting">Cutting</option>
-            <option value="indoor">Indoor</option>
-            <option value="laser">Laser CO₂</option>
-            <option value="docu">Docu A3+</option>
-          </select>
-        </div>
+  <section class="panel tab-panel" id="tab-machines">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Mesin &amp; biaya operasional</h2>
+        <p class="hint" style="margin:0">Biaya mesin/jam dihitung otomatis dari harga beli, umur ekonomis, listrik &amp; perawatan.</p>
       </div>
+      <button class="btn primary" id="addMachineBtn">+ Mesin</button>
     </div>
-
-    <div id="formArea"></div>
-    <div id="resultArea"></div>
+    <div id="machinesList"></div>
   </section>
 
-  <!-- MATERIAL -->
-  <section id="materials" class="panel">
-    <div class="card">
-      <h2>Material</h2>
-      <div class="grid3">
-        <div class="field"><label>Nama material</label><input id="matName" placeholder="Vinyl fosfor"></div>
-        <div class="field"><label>Harga beli (Rp)</label><input id="matPrice" type="number" min="0" value="3500"></div>
-        <div class="field"><label>Satuan</label><input id="matUnit" value="100 cm"></div>
+  <section class="panel tab-panel" id="tab-settings">
+    <h2 class="section-title">Tenaga kerja, overhead &amp; margin</h2>
+    <p class="hint">Nilai ini dipakai di semua proses agar HPP mencerminkan biaya bengkel secara utuh, bukan hanya bahan.</p>
+    <div class="field-row">
+      <div class="field">
+        <label>Upah tenaga kerja langsung (Rp / jam)</label>
+        <input type="number" id="setLaborRate" min="0" step="500" />
       </div>
-      <button class="btn btn-primary" id="addMat">Tambah Material</button>
-    </div>
-    <div class="card">
-      <table><thead><tr><th>Material</th><th>Harga</th><th>Satuan</th><th>Aksi</th></tr></thead>
-      <tbody id="materialTable"></tbody></table>
-    </div>
-  </section>
-
-  <!-- MESIN -->
-  <section id="machines" class="panel">
-    <div class="card">
-      <h2>Mesin & Biaya</h2>
-      <p class="small">Masukkan angka biaya yang ingin dipakai sebagai referensi HPP. Nilai ini tersimpan di browser.</p>
-      <div class="grid3">
-        <div class="field"><label>Biaya listrik / jam (Rp)</label><input id="electric" type="number" value="3000"></div>
-        <div class="field"><label>Biaya penyusutan / jam (Rp)</label><input id="depr" type="number" value="5000"></div>
-        <div class="field"><label>Tenaga kerja / jam (Rp)</label><input id="labor" type="number" value="5000"></div>
+      <div class="field">
+        <label>Margin default (%)</label>
+        <input type="number" id="setMargin" min="0" step="1" />
+        <span class="subnote">Markup di atas HPP untuk harga jual awal</span>
       </div>
-      <button class="btn btn-primary" id="saveMachine">Simpan Biaya</button>
     </div>
-    <div class="card">
-      <h3>Biaya tersimpan</h3>
-      <div id="machineSummary"></div>
+    <hr class="divider" />
+    <p class="hint" style="margin-bottom:10px">Biaya tetap bulanan (sewa tempat, gaji non-produksi, listrik umum, dll) dibagi jam kerja produktif untuk dapat overhead per jam.</p>
+    <div class="field-row">
+      <div class="field">
+        <label>Sewa tempat / bulan (Rp)</label>
+        <input type="number" id="setRent" min="0" step="10000" />
+      </div>
+      <div class="field">
+        <label>Biaya tetap lain / bulan (Rp)</label>
+        <input type="number" id="setOther" min="0" step="10000" />
+        <span class="subnote">Gaji admin, internet, dll</span>
+      </div>
+      <div class="field">
+        <label>Total jam produktif / bulan</label>
+        <input type="number" id="setHours" min="1" step="1" />
+        <span class="subnote">Mis. 26 hari × 8 jam = 208</span>
+      </div>
+    </div>
+    <div class="ledger" style="margin-top:6px">
+      <div class="ledger-row"><span class="lbl">Overhead per jam</span><span class="fill"></span><span class="val num" id="overheadPreview">Rp 0</span></div>
+    </div>
+    <div class="modal-actions" style="justify-content:flex-start;margin-top:18px">
+      <button class="btn primary" id="saveSettingsBtn">Simpan pengaturan</button>
     </div>
   </section>
 
-  <!-- REFERENSI -->
-  <section id="references" class="panel">
-    <div class="card">
-      <h2>Harga Referensi</h2>
-      <p class="small">Daftar ini bisa dipakai sebagai pembanding harga pasar/toko sebelah.</p>
-      <div class="grid3">
-        <div class="field"><label>Nama jasa</label><input id="refName" placeholder="Cutting sticker"></div>
-        <div class="field"><label>Harga (Rp)</label><input id="refPrice" type="number" min="0"></div>
-        <div class="field"><label>Satuan</label><input id="refUnit" placeholder="cm² / lembar / meter"></div>
+  <section class="panel tab-panel" id="tab-benchmarks">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Harga referensi (benchmark)</h2>
+        <p class="hint" style="margin:0">Dipisahkan dari HPP — untuk membandingkan harga jual dengan pasar/broker, bukan dasar perhitungan biaya.</p>
       </div>
-      <button class="btn btn-primary" id="addRef">Tambah Referensi</button>
+      <button class="btn primary" id="addBenchmarkBtn">+ Referensi</button>
     </div>
-    <div class="card">
-      <table><thead><tr><th>Jasa</th><th>Harga</th><th>Satuan</th><th>Aksi</th></tr></thead>
-      <tbody id="referenceTable"></tbody></table>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Material/produk</th><th>1–100</th><th>101–500</th><th>≥501</th><th>Catatan</th><th></th></tr></thead>
+        <tbody id="benchmarksTable"></tbody>
+      </table>
     </div>
+  </section>
+
+  <section class="panel tab-panel" id="tab-acrylic">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Referensi Acrylic</h2>
+        <p class="hint" style="margin:0">Database acrylic terpisah dari Harga Referensi umum. Fokus data 2–5 mm, ukuran 100 × 200 cm dan 122 × 244 cm, jenis Bening, Susu, dan Warna.</p>
+      </div>
+      <button class="btn primary" id="addAcrylicBtn">+ Tambah jenis bahan</button>
+    </div>
+    <div class="note" style="margin:0 0 18px;padding:10px 12px;border:1px solid var(--line-strong);background:var(--surface-2);font-size:12px;">
+      <b>Format:</b> Keterangan = jenis/tebal, contoh <b>Bening 2mm</b>. Rp/cm² dihitung otomatis dari harga lembar ÷ luas lembar.
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Keterangan</th><th>Ukuran</th><th>Harga</th><th>Rp/cm²</th><th>Aksi</th></tr></thead>
+        <tbody id="acrylicTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel tab-panel" id="tab-history">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Riwayat perhitungan</h2>
+        <p class="hint" style="margin:0">Tersimpan otomatis setiap kali kamu menekan "Simpan ke riwayat" di hasil kalkulator.</p>
+      </div>
+      <button class="btn small" id="clearHistoryBtn">Kosongkan riwayat</button>
+    </div>
+    <div id="historyList"></div>
   </section>
 </main>
 
+<footer class="foot">Versi fleksibel — data disimpan di browser ini saja. Gunakan "Ekspor data" secara berkala untuk mencadangkan.</footer>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal-box">
+    <h3 id="modalTitle">Edit</h3>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn" id="cancelModal">Batal</button>
+      <button class="btn primary" id="saveModal">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-const KEY = 'hpp_usaha_elquirazh_v2';
+(function(){
+  "use strict";
 
-const defaultData = {
-  materials: [
-    {name:'Vinyl fosfor', price:3500, unit:'100 cm'},
-    {name:'Vinyl sticker umum', price:0, unit:'100 cm'}
-  ],
-  references: [],
-  machines: {electric:3000,depr:5000,labor:5000}
-};
+  /* ============ constants ============ */
+  var STORAGE_KEY = "hpp_elquirazh_v1";
+  var PROCESS = {
+    indoor:  { label: "Indoor",  full: "Indoor (Cetak Digital)",   unit: "m²",     driver: "area",  color: "var(--indoor)"  },
+    cutting: { label: "Cutting", full: "Cutting (Sticker/Vinyl)",  unit: "cm²",   driver: "area",  color: "var(--cutting)" },
+    laser:   { label: "Laser CO₂", full: "Laser CO₂ (Potong/Ukir)", unit: "menit", driver: "time",  color: "var(--laser)"   },
+    docu:    { label: "Docu A3+", full: "Docu A3+ (Cetak Dokumen)", unit: "lembar", driver: "sheet", color: "var(--docu)"    }
+  };
 
-let data = loadData();
+  function uid(prefix){ return prefix + "_" + Math.random().toString(36).slice(2,9); }
 
-function loadData(){
-  try{
-    const saved = localStorage.getItem(KEY);
-    return saved ? {...defaultData,...JSON.parse(saved)} : structuredClone(defaultData);
-  }catch(e){ return structuredClone(defaultData); }
-}
-function saveData(){ localStorage.setItem(KEY, JSON.stringify(data)); }
-function rupiah(n){
-  return 'Rp ' + Math.round(Number(n)||0).toLocaleString('id-ID');
-}
-function num(id, fallback=0){
-  const n = parseFloat(document.getElementById(id)?.value);
-  return Number.isFinite(n) ? n : fallback;
-}
-function esc(s){
-  return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-}
+  function defaultData(){
+    return {
+      settings: { laborRate: 18000, margin: 200, rent: 1500000, other: 800000, hours: 208 },
+      machines: [
+        { id: uid("mch"), name: "Printer Indoor Solvent 3.2m", process: "indoor", price: 55000000, usefulYears: 5, hoursPerDay: 8, daysPerMonth: 26, wattage: 2200, elecRate: 1500, maintenance: 400000, extraPerHour: 0, speed: 10 },
+        { id: uid("mch"), name: "Cutting Plotter Vinyl 1.6m", process: "cutting", price: 18000000, usefulYears: 5, hoursPerDay: 8, daysPerMonth: 26, wattage: 350, elecRate: 1500, maintenance: 150000, extraPerHour: 0, speed: 20 },
+        { id: uid("mch"), name: "Laser CO₂ 100W 90x60", process: "laser", price: 65000000, usefulYears: 6, hoursPerDay: 8, daysPerMonth: 24, wattage: 3000, elecRate: 1500, maintenance: 500000, extraPerHour: 5000, speed: 0 },
+        { id: uid("mch"), name: "Digital Press A3+ (Fiery)", process: "docu", price: 120000000, usefulYears: 7, hoursPerDay: 8, daysPerMonth: 26, wattage: 1800, elecRate: 1500, maintenance: 600000, extraPerHour: 0, speed: 3000 }
+      ],
+      materials: [
+        { id: uid("mat"), name: "Flexi China 280gsm", process: "indoor", price: 12000, unit: "m²", waste: 5, note: "" },
+        { id: uid("mat"), name: "Flexi Korea Backlit", process: "indoor", price: 28000, unit: "m²", waste: 5, note: "" },
+        { id: uid("mat"), name: "Bahan Fosfor", process: "cutting", price: 35500, unit: "m", waste: 0, note: "1 meter = 100 × 60 cm (6.000 cm²)" },
+        { id: uid("mat"), name: "Sticker One Way Vision", process: "cutting", price: 45000, unit: "m²", waste: 8, note: "" },
+        { id: uid("mat"), name: "Akrilik bening 3mm (60×90)", process: "laser", price: 55000, unit: "lembar", waste: 5, note: "Ukuran 60×90cm" },
+        { id: uid("mat"), name: "MDF 3mm (60×90)", process: "laser", price: 35000, unit: "lembar", waste: 5, note: "Ukuran 60×90cm" },
+        { id: uid("mat"), name: "Kertas HVS A3+ 100gsm", process: "docu", price: 600, unit: "lembar", waste: 2, note: "" },
+        { id: uid("mat"), name: "Art paper A3+ 150gsm", process: "docu", price: 1200, unit: "lembar", waste: 2, note: "" }
+      ],
+      benchmarks: [
+        { id: uid("bm"), name: "Indoor Flexi China (per m²)", p1: 35000, p2: 32000, p3: 28000, note: "Harga member/broker" },
+        { id: uid("bm"), name: "Cutting Sticker Oracal (per m²)", p1: 60000, p2: 55000, p3: 48000, note: "" },
+        { id: uid("bm"), name: "Laser Akrilik 3mm (per lembar 60×90)", p1: 150000, p2: 140000, p3: 125000, note: "" },
+        { id: uid("bm"), name: "Docu A3+ HVS (per lembar)", p1: 3000, p2: 2500, p3: 2000, note: "" }
+      ],
+      acrylicReferences: [
+        {id: uid("ac"), type:"Bening", thickness:2, size:"100x200", price:323000}, {id: uid("ac"), type:"Susu", thickness:2, size:"100x200", price:332000}, {id: uid("ac"), type:"Warna", thickness:2, size:"100x200", price:363000},
+        {id: uid("ac"), type:"Bening", thickness:2, size:"122x244", price:572000}, {id: uid("ac"), type:"Susu", thickness:2, size:"122x244", price:588000}, {id: uid("ac"), type:"Warna", thickness:2, size:"122x244", price:642000},
+        {id: uid("ac"), type:"Bening", thickness:3, size:"100x200", price:549000}, {id: uid("ac"), type:"Susu", thickness:3, size:"100x200", price:563000}, {id: uid("ac"), type:"Warna", thickness:3, size:"100x200", price:616000},
+        {id: uid("ac"), type:"Bening", thickness:3, size:"122x244", price:817000}, {id: uid("ac"), type:"Susu", thickness:3, size:"122x244", price:838000}, {id: uid("ac"), type:"Warna", thickness:3, size:"122x244", price:917000},
+        {id: uid("ac"), type:"Bening", thickness:4, size:"100x200", price:616000}, {id: uid("ac"), type:"Susu", thickness:4, size:"100x200", price:632000}, {id: uid("ac"), type:"Warna", thickness:4, size:"100x200", price:691000},
+        {id: uid("ac"), type:"Bening", thickness:4, size:"122x244", price:1089000}, {id: uid("ac"), type:"Susu", thickness:4, size:"122x244", price:1117000}, {id: uid("ac"), type:"Warna", thickness:4, size:"122x244", price:1222000},
+        {id: uid("ac"), type:"Bening", thickness:5, size:"100x200", price:753000}, {id: uid("ac"), type:"Susu", thickness:5, size:"100x200", price:773000}, {id: uid("ac"), type:"Warna", thickness:5, size:"100x200", price:846000},
+        {id: uid("ac"), type:"Bening", thickness:5, size:"122x244", price:1332000}, {id: uid("ac"), type:"Susu", thickness:5, size:"122x244", price:1367000}, {id: uid("ac"), type:"Warna", thickness:5, size:"122x244", price:1495000}
+      ],
+      history: []
+    };
+  }
 
-/* ---------- TAB ---------- */
-document.querySelectorAll('.tab').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
-    if(btn.dataset.tab==='materials') renderMaterials();
-    if(btn.dataset.tab==='machines') renderMachines();
-    if(btn.dataset.tab==='references') renderReferences();
+  var data = loadData();
+  var state = { process: "indoor", extras: [] };
+
+  function loadData(){
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return defaultData();
+      var parsed = JSON.parse(raw);
+      if (!parsed.settings || !parsed.machines || !parsed.materials) return defaultData();
+      if (!parsed.benchmarks) parsed.benchmarks = [];
+      if (!parsed.acrylicReferences) parsed.acrylicReferences = defaultData().acrylicReferences;
+      if (!parsed.history) parsed.history = [];
+      return parsed;
+    } catch (e) { return defaultData(); }
+  }
+  function saveData(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    catch (e) { showToast("Gagal menyimpan data ke browser."); }
+  }
+
+  function rupiah(n){
+    n = Math.round(n || 0);
+    return "Rp " + n.toLocaleString("id-ID");
+  }
+  function numOr0(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
+
+  function showToast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(showToast._h);
+    showToast._h = setTimeout(function(){ t.classList.remove("show"); }, 2200);
+  }
+
+  /* ============ core cost engine ============ */
+  function machineHourlyCost(m){
+    var lifetimeHours = (m.usefulYears || 0) * (m.daysPerMonth || 0) * 12 * (m.hoursPerDay || 0);
+    var depreciation = lifetimeHours > 0 ? (m.price || 0) / lifetimeHours : 0;
+    var electricity = ((m.wattage || 0) / 1000) * (m.elecRate || 0);
+    var maintPerHour = (m.daysPerMonth || 0) * (m.hoursPerDay || 0) > 0
+      ? (m.maintenance || 0) / ((m.daysPerMonth || 0) * (m.hoursPerDay || 0)) : 0;
+    var extra = m.extraPerHour || 0;
+    return {
+      depreciation: depreciation, electricity: electricity,
+      maintenance: maintPerHour, extra: extra,
+      total: depreciation + electricity + maintPerHour + extra
+    };
+  }
+  function overheadPerHour(s){
+    return (s.hours > 0) ? ((s.rent || 0) + (s.other || 0)) / s.hours : 0;
+  }
+
+  /* Area-driven: indoor & cutting. speed in m2/jam */
+  function calcArea(inputs){
+    var machine = inputs.machine, material = inputs.material;
+    var panjang = inputs.panjang, lebar = inputs.lebar, qty = inputs.qty;
+    var areaPerPc = panjang * lebar;
+    var totalArea = areaPerPc * qty;
+
+    // CUTTING: HPP dibangun per pcs, bukan dari HPP/m².
+    // 1 meter bahan = 100 × 60 cm = 6.000 cm².
+    if (inputs.isCutting) {
+      var materialLengthCm = inputs.materialLengthCm || 100;
+      var materialWidthCm = inputs.materialWidthCm || 60;
+      var materialAreaCm2 = materialLengthCm * materialWidthCm;
+      var materialPricePerMeter = material ? material.price : 0;
+      var materialRateExact = materialAreaCm2 > 0 ? materialPricePerMeter / materialAreaCm2 : 0;
+      var materialRate = Math.ceil(materialRateExact); // Rp5,9167 -> Rp6/cm²
+      var areaCm2PerPc = areaPerPc * 10000;
+       var materialHppPerPc = areaCm2PerPc * materialRate;
+      var maskingHppPerPc = areaCm2PerPc * (inputs.masking || 0);
+      var laborHppPerPc = areaCm2PerPc * (inputs.laborCut || 0);
+      var machineHppPerPc = areaCm2PerPc * (inputs.machineCut || 0);
+      var overheadHppPerPc = areaCm2PerPc * (inputs.overheadCut || 0);
+      var extrasPerPc = sumExtras(inputs.extras) / qty;
+      var hppPerPc = materialHppPerPc + maskingHppPerPc + laborHppPerPc + machineHppPerPc + overheadHppPerPc + extrasPerPc;
+      var totalHPP = hppPerPc * qty;
+
+      return {
+        driverLabel: "Luas total",
+        driverValue: (totalArea * 10000).toFixed(2) + " cm²",
+        rows: [
+          { label: "HPP bahan per pcs", value: materialHppPerPc },
+          { label: "HPP masking per pcs", value: maskingHppPerPc },
+          { label: "Tenaga kerja per pcs", value: laborHppPerPc },
+          { label: "Mesin per pcs", value: machineHppPerPc },
+          { label: "Overhead per pcs", value: overheadHppPerPc },
+          { label: "Biaya lain-lain per pcs", value: extrasPerPc },
+          { label: "Luas objek per pcs", value: areaCm2PerPc, displayUnit: "cm²", isArea: true },
+          { label: "Harga bahan per meter", value: materialPricePerMeter },
+          { label: "Luas bahan 1 meter", value: materialAreaCm2, displayUnit: "cm²", isArea: true },
+          { label: "HPP bahan per cm²", value: materialRate, displayUnit: "Rp/cm²", isRateDisplay: true }
+        ],
+        perUnitLabel: "Total HPP per pcs",
+        perUnit: hppPerPc,
+        subtotal: totalHPP - sumExtras(inputs.extras),
+        extrasTotal: sumExtras(inputs.extras),
+        totalHPP: totalHPP,
+        qty: qty,
+        machineWarn: false,
+        isCutting: true,
+        areaCm2PerPc: areaPerPc * 10000,
+        areaCm2Total: totalArea * 10000,
+        cuttingMaterialRate: materialRate,
+        cuttingMaterialRateExact: materialRateExact,
+        cuttingMaterialHppPerPc: materialHppPerPc,
+        cuttingMaskingPerPc: maskingHppPerPc,
+        cuttingLaborPerPc: laborHppPerPc,
+        cuttingMachinePerPc: machineHppPerPc,
+        cuttingOverheadPerPc: overheadHppPerPc
+      };
+    }
+
+    var speed = machine.speed > 0 ? machine.speed : 1;
+    var mh = machineHourlyCost(machine);
+    var ohHour = overheadPerHour(data.settings);
+    var matPerM2 = material ? material.price * (1 + (material.waste || 0) / 100) : 0;
+    var inkPerM2 = (inputs.inkMl || 0) * (inputs.inkPrice || 0);
+    var machinePerM2 = mh.total / speed;
+    var laborPerM2 = data.settings.laborRate / speed;
+    var ohPerM2 = ohHour / speed;
+    var hppPerM2 = matPerM2 + inkPerM2 + machinePerM2 + laborPerM2 + ohPerM2;
+    var subtotal = hppPerM2 * totalArea;
+    var extrasTotal = sumExtras(inputs.extras);
+    var totalHPP = subtotal + extrasTotal;
+    return {
+      driverLabel: "Luas total", driverValue: totalArea.toFixed(2) + " m²",
+      rows: [
+        material ? { label: "Material (per m²)", value: matPerM2 } : null,
+        inputs.inkMl ? { label: "Tinta (per m²)", value: inkPerM2 } : null,
+        { label: "Mesin — penyusutan+listrik+rawat (per m²)", value: machinePerM2 },
+        { label: "Tenaga kerja (per m²)", value: laborPerM2 },
+        { label: "Overhead (per m²)", value: ohPerM2 }
+      ].filter(Boolean),
+      perUnitLabel: "HPP per m²", perUnit: hppPerM2,
+      subtotal: subtotal, extrasTotal: extrasTotal, totalHPP: totalHPP,
+      qty: qty, machineWarn: speed <= 1 && machine.speed <= 0
+    };
+  }
+
+  /* Time-driven: laser — acrylic + biaya tabung per menit */
+  function calcTime(inputs){
+    var material = inputs.material;
+    var qty = inputs.qty, waktu = inputs.waktuPerUnit;
+    var luasPerPc = (inputs.panjangCm || 0) * (inputs.lebarCm || 0);
+    var wastePct = inputs.wastePct == null ? 5 : Math.max(0, inputs.wastePct);
+    var luasDenganWastePerPc = luasPerPc * (1 + wastePct / 100);
+    var acrylicRate = material ? acrylicRpCm2(material.price, material.size) : 0;
+    var materialHppPerPc = luasDenganWastePerPc * acrylicRate;
+    var tubePrice = inputs.tubePrice || 0;
+    var tubeHours = inputs.tubeHours || 0;
+    var perMinute = tubeHours > 0 ? tubePrice / (tubeHours * 60) : 0;
+    var totalMinutes = waktu * qty;
+    var timeHppPerPc = perMinute * waktu;
+    var materialTotal = materialHppPerPc * qty;
+    var prosesTotal = perMinute * totalMinutes;
+    var extrasTotal = sumExtras(inputs.extras);
+    var totalHPP = materialTotal + prosesTotal + extrasTotal;
+
+    return {
+      driverLabel: "Total waktu proses", driverValue: totalMinutes.toFixed(1) + " menit",
+      rows: [
+        { label: "Panjang objek", value: inputs.panjangCm, displayUnit: "cm", isArea: true },
+        { label: "Lebar objek", value: inputs.lebarCm, displayUnit: "cm", isArea: true },
+        { label: "Luas objek per pcs", value: luasPerPc, displayUnit: "cm²", isArea: true },
+        { label: "Waste / bahan terbuang", value: wastePct, displayUnit: "%", isArea: true },
+        { label: "Luas bahan setelah waste per pcs", value: luasDenganWastePerPc, displayUnit: "cm²", isArea: true },
+        material ? { label: "Harga bahan / cm²", value: acrylicRate, displayUnit: "Rp/cm²", isRateDisplay: true } : { label: "Harga bahan / cm²", value: 0, displayUnit: "Rp/cm²", isRateDisplay: true },
+        material ? { label: "HPP bahan per pcs", value: materialHppPerPc } : { label: "HPP bahan per pcs", value: 0 },
+        { label: "Waktu proses per pcs", value: waktu, displayUnit: "menit", isArea: true },
+        { label: "Harga tabung laser", value: tubePrice },
+        { label: "Umur tabung", value: tubeHours, displayUnit: "jam", isArea: true },
+        { label: "HPP waktu / menit", value: perMinute, displayUnit: "Rp/menit", isRateDisplay: true },
+        { label: "HPP waktu per pcs", value: timeHppPerPc }
+      ],
+      perUnitLabel: "Total HPP per pcs", perUnit: materialHppPerPc + timeHppPerPc + (extrasTotal / qty),
+      subtotal: materialTotal + prosesTotal, extrasTotal: extrasTotal, totalHPP: totalHPP,
+      totalMinutes: totalMinutes, qty: qty, machineWarn: false,
+      acrylicRate: acrylicRate, materialHppPerPc: materialHppPerPc, timeHppPerPc: timeHppPerPc,
+      wastePct: wastePct, luasPerPc: luasPerPc, luasDenganWastePerPc: luasDenganWastePerPc,
+      tubePrice: tubePrice, tubeHours: tubeHours, perMinute: perMinute
+    };
+  }
+
+  /* Sheet-driven: docu A3+ */
+  function calcSheet(inputs){
+    var machine = inputs.machine, material = inputs.material;
+    var qty = inputs.qty, sisi = inputs.sisi, inkBase = inputs.inkBase, coverageMult = inputs.coverageMult;
+    var speed = machine.speed > 0 ? machine.speed : 1;
+    var mh = machineHourlyCost(machine);
+    var ohHour = overheadPerHour(data.settings);
+
+    var matPerSheet = material.price * (1 + (material.waste || 0) / 100);
+    var inkPerSheet = inkBase * coverageMult * sisi;
+    var machinePerSheet = mh.total / speed;
+    var laborPerSheet = data.settings.laborRate / speed;
+    var ohPerSheet = ohHour / speed;
+    var hppPerSheet = matPerSheet + inkPerSheet + machinePerSheet + laborPerSheet + ohPerSheet;
+
+    var subtotal = hppPerSheet * qty;
+    var extrasTotal = sumExtras(inputs.extras);
+    var totalHPP = subtotal + extrasTotal;
+
+    return {
+      driverLabel: "Jumlah lembar", driverValue: qty + " lembar",
+      rows: [
+        { label: "Kertas (per lembar)", value: matPerSheet },
+        { label: "Toner/tinta (per lembar, " + sisi + " sisi)", value: inkPerSheet },
+        { label: "Mesin (per lembar)", value: machinePerSheet },
+        { label: "Tenaga kerja (per lembar)", value: laborPerSheet },
+        { label: "Overhead (per lembar)", value: ohPerSheet }
+      ],
+      perUnitLabel: "HPP per lembar", perUnit: hppPerSheet,
+      subtotal: subtotal, extrasTotal: extrasTotal, totalHPP: totalHPP,
+      qty: qty, machineWarn: speed <= 1 && machine.speed <= 0
+    };
+  }
+
+  function sumExtras(extras){
+    return (extras || []).reduce(function(acc, e){ return acc + (numOr0(e.qty) * numOr0(e.price)); }, 0);
+  }
+
+  /* ============ tabs ============ */
+  var tabButtons = document.querySelectorAll("nav.tabs .tab");
+  tabButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      tabButtons.forEach(function(b){ b.classList.remove("active"); });
+      document.querySelectorAll(".tab-panel").forEach(function(p){ p.classList.remove("active"); });
+      btn.classList.add("active");
+      document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+    });
   });
-});
 
-/* ---------- FORM KALKULATOR ---------- */
-const process = document.getElementById('process');
-process.addEventListener('change', renderForm);
-renderForm();
-
-function renderForm(){
-  const type = process.value;
-
-  if(type==='cutting'){
-    document.getElementById('formArea').innerHTML = `
-      <div class="card">
-        <h2>Parameter Cutting</h2>
-        <div class="grid2">
-          <div class="field">
-            <label>Panjang objek (cm)</label>
-            <input type="number" id="cut_panjang" min="0" step="0.1" value="10">
-          </div>
-          <div class="field">
-            <label>Lebar objek (cm)</label>
-            <input type="number" id="cut_lebar" min="0" step="0.1" value="10">
-          </div>
-          <div class="field">
-            <label>Jumlah warna</label>
-            <input type="number" id="cut_warna" min="1" step="1" value="2">
-          </div>
-          <div class="field">
-            <label>Harga jual cutting / cm²</label>
-            <input type="number" id="cut_harga" min="0" step="1" value="50">
-          </div>
-          <div class="field">
-            <label>Biaya masking / cm</label>
-            <input type="number" id="cut_masking" min="0" step="0.1" value="4">
-          </div>
-        </div>
-        <div class="note">
-          <b>Catatan rumus Cutting:</b> harga jual dasar dihitung dari luas objek.
-          Jumlah warna <b>tidak dikalikan</b> ke harga jual dasar.
-          Jika warna tambahan ingin diberi biaya khusus, bisa ditambahkan kemudian sebagai parameter terpisah.
-        </div>
-        <div class="actions">
-          <button class="btn btn-primary" id="btnHitung">Hitung HPP</button>
-        </div>
-      </div>`;
+  /* ============ calculator: process picker ============ */
+  function renderProcessPicker(){
+    var el = document.getElementById("processPicker");
+    el.innerHTML = "";
+    Object.keys(PROCESS).forEach(function(key){
+      var p = PROCESS[key];
+      var card = document.createElement("button");
+      card.className = "proc-card" + (state.process === key ? " active" : "");
+      card.innerHTML = '<span class="chip" style="background:' + p.color + '"></span>' +
+        '<span class="name">' + p.label + '</span><span class="unit">satuan: ' + p.unit + '</span>';
+      card.addEventListener("click", function(){
+        state.process = key;
+        state.extras = [];
+        renderProcessPicker();
+        renderCalcForm();
+        document.getElementById("calcResult").innerHTML = "";
+      });
+      el.appendChild(card);
+    });
   }
 
-  if(type==='indoor'){
-    document.getElementById('formArea').innerHTML = `
-      <div class="card">
-        <h2>Parameter Indoor</h2>
-        <div class="grid2">
-          <div class="field"><label>Panjang (meter)</label><input type="number" id="in_panjang" value="1" min="0" step="0.01"></div>
-          <div class="field"><label>Lebar (meter)</label><input type="number" id="in_lebar" value="1" min="0" step="0.01"></div>
-          <div class="field"><label>HPP bahan / m² (Rp)</label><input type="number" id="in_bahan" value="15000" min="0"></div>
-          <div class="field"><label>Harga jual / m² (Rp)</label><input type="number" id="in_harga" value="35000" min="0"></div>
-        </div>
-        <div class="actions"><button class="btn btn-primary" id="btnHitung">Hitung HPP</button></div>
-      </div>`;
+  function machinesFor(proc){ return data.machines.filter(function(m){ return m.process === proc; }); }
+  function materialsFor(proc){ return data.materials.filter(function(m){ return m.process === proc; }); }
+
+  function optionList(items, labelFn){
+    return items.map(function(it){ return '<option value="' + it.id + '">' + labelFn(it) + '</option>'; }).join("");
   }
 
-  if(type==='laser'){
-    document.getElementById('formArea').innerHTML = `
-      <div class="card">
-        <h2>Parameter Laser CO₂</h2>
-        <div class="grid2">
-          <div class="field"><label>Panjang bahan (cm)</label><input type="number" id="lz_panjang" value="10" min="0"></div>
-          <div class="field"><label>Lebar bahan (cm)</label><input type="number" id="lz_lebar" value="10" min="0"></div>
-          <div class="field"><label>HPP bahan (Rp)</label><input type="number" id="lz_bahan" value="10000" min="0"></div>
-          <div class="field"><label>Waktu mesin (menit)</label><input type="number" id="lz_waktu" value="10" min="0"></div>
-          <div class="field"><label>Harga jual (Rp)</label><input type="number" id="lz_harga" value="50000" min="0"></div>
-        </div>
-        <div class="actions"><button class="btn btn-primary" id="btnHitung">Hitung HPP</button></div>
-      </div>`;
+  function renderExtrasEditor(container){
+    container.innerHTML = "";
+    var title = document.createElement("div");
+    title.className = "field";
+    title.innerHTML = '<label>Biaya tambahan / finishing (opsional)</label>';
+    container.appendChild(title);
+
+    var list = document.createElement("div");
+    list.className = "extras-list";
+    container.appendChild(list);
+
+    function draw(){
+      list.innerHTML = "";
+      state.extras.forEach(function(ex, idx){
+        var row = document.createElement("div");
+        row.className = "extra-row";
+        row.innerHTML =
+          '<input type="text" placeholder="Nama (mis. Mata ayam)" value="' + (ex.name || "").replace(/"/g,"&quot;") + '" data-f="name" />' +
+          '<input type="number" placeholder="Qty" min="0" step="1" value="' + (ex.qty || "") + '" data-f="qty" />' +
+          '<input type="number" placeholder="Harga satuan" min="0" step="100" value="' + (ex.price || "") + '" data-f="price" />' +
+          '<button class="btn icon-btn small" data-remove>✕</button>';
+        row.querySelectorAll("input").forEach(function(inp){
+          inp.addEventListener("input", function(){
+            ex[inp.dataset.f] = inp.dataset.f === "name" ? inp.value : numOr0(inp.value);
+            renderCalcResult();
+          });
+        });
+        row.querySelector("[data-remove]").addEventListener("click", function(){
+          state.extras.splice(idx,1); draw(); renderCalcResult();
+        });
+        list.appendChild(row);
+      });
+    }
+    draw();
+
+    var addBtn = document.createElement("button");
+    addBtn.className = "btn small";
+    addBtn.textContent = "+ Tambah biaya";
+    addBtn.addEventListener("click", function(){
+      state.extras.push({ name: "", qty: 1, price: 0 });
+      draw();
+      renderCalcResult();
+    });
+    container.appendChild(addBtn);
   }
 
-  if(type==='docu'){
-    document.getElementById('formArea').innerHTML = `
-      <div class="card">
-        <h2>Parameter Docu A3+</h2>
-        <div class="grid2">
-          <div class="field"><label>Jumlah lembar</label><input type="number" id="dc_qty" value="1" min="1"></div>
-          <div class="field"><label>HPP / lembar (Rp)</label><input type="number" id="dc_hpp" value="1000" min="0"></div>
-          <div class="field"><label>Harga jual / lembar (Rp)</label><input type="number" id="dc_harga" value="2500" min="0"></div>
-        </div>
-        <div class="note"><b>Area umum A3+ Xerox 7855:</b> 30,5 × 47 cm. Ukuran di bawah itu dapat dipakai untuk kebutuhan khusus/lembaran dan tidak otomatis dianggap sebagai area harga umum.</div>
-        <div class="actions"><button class="btn btn-primary" id="btnHitung">Hitung HPP</button></div>
-      </div>`;
+  function renderCalcForm(){
+    var proc = state.process;
+    var meta = PROCESS[proc];
+    var machines = machinesFor(proc);
+    var materials = materialsFor(proc);
+    var form = document.getElementById("calcForm");
+
+    if (machines.length === 0) {
+      form.innerHTML = '<div class="empty-state">Belum ada mesin untuk proses ' + meta.full + '. Tambahkan dulu di tab "Mesin".</div>';
+      document.getElementById("calcResult").innerHTML = "";
+      return;
+    }
+
+    var html = '<div class="field-row">' +
+      '<div class="field"><label>Nama produk / pekerjaan</label><input type="text" id="fProductName" placeholder="Contoh: Banner Toko Sinar Jaya" /></div>' +
+      '<div class="field"><label>Mesin</label><select id="fMachine">' + optionList(machines, function(m){ return m.name; }) + '</select></div>' +
+      '</div>';
+
+    if (proc === "laser") {
+      var acrylicRefs = (data.acrylicReferences || []).filter(function(a){ return [2,3,4,5].indexOf(Number(a.thickness)) >= 0; });
+      html += '<div class="field-row">' +
+        '<div class="field"><label>Material Acrylic</label><select id="fMaterial">' +
+        '<option value="">— Pilih acrylic —</option>' +
+        acrylicRefs.map(function(a){ return '<option value="' + a.id + '">' + esc(a.type + ' ' + a.thickness + 'mm (' + a.size.replace('x',' × ') + ' cm)') + ' — ' + rupiah(a.price) + ' / ' + acrylicRpCm2(a.price,a.size).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' Rp/cm²</option>'; }).join('') +
+        '</select><span class="subnote">Harga Rp/cm² otomatis diambil dari Referensi Acrylic.</span></div>' +
+        '<div class="field"><label>Harga bahan / cm²</label><input type="text" id="fAcrylicRate" value="—" readonly /></div>' +
+        '</div>';
+    } else if (materials.length > 0) {
+      html += '<div class="field-row"><div class="field"><label>Material</label><select id="fMaterial">' +
+        optionList(materials, function(m){ return m.name + " — " + rupiah(m.price) + "/" + m.unit; }) + '</select></div></div>';
+    }
+
+    if (meta.driver === "area") {
+      if (proc === "cutting") {
+        html += '<div class="field-row">' +
+          '<div class="field"><label>Panjang objek (cm)</label><input type="number" id="fPanjangCm" min="0" step="0.1" value="10" /></div>' +
+          '<div class="field"><label>Lebar objek (cm)</label><input type="number" id="fLebarCm" min="0" step="0.1" value="10" /></div>' +
+          '<div class="field"><label>Jumlah (pcs)</label><input type="number" id="fQty" min="1" step="1" value="1" /></div>' +
+          '</div>' +
+          '<div class="field-row">' +
+          '<div class="field"><label>Jumlah warna</label><input type="number" id="fColors" min="1" step="1" value="2" />' +
+          '<span class="subnote">Informasi produksi. Tidak otomatis dikalikan ke harga jual/HPP.</span></div>' +
+          '<div class="field"><label>Harga jual cutting (Rp/cm²)</label><input type="number" id="fCutSell" min="0" step="1" value="50" />' +
+          '<span class="subnote">10 × 10 × Rp50 = Rp5.000.</span></div>' +
+          '<div class="field"><label>Biaya masking (Rp/cm²)</label><input type="number" id="fMasking" min="0" step="1" value="4" />' +
+          '<span class="subnote">Sesuai rumus: luas × Rp4.</span></div>' +
+          '</div>' +
+          '<div class="field-row">' +
+          '<div class="field"><label>Biaya tenaga kerja (Rp/cm²)</label><input type="number" id="fLaborCut" min="0" step="1" value="5" />' +
+          '<span class="subnote">Default Rp5/cm² — bisa diubah manual.</span></div>' +
+          '<div class="field"><label>Biaya mesin (Rp/cm²)</label><input type="number" id="fMachineCut" min="0" step="1" value="2" />' +
+          '<span class="subnote">Default Rp2/cm² — bisa diubah manual.</span></div>' +
+          '<div class="field"><label>Overhead (Rp/cm²)</label><input type="number" id="fOverheadCut" min="0" step="1" value="5" />' +
+          '<span class="subnote">Default Rp5/cm² — bisa diubah manual.</span></div>' +
+          '</div>';
+      } else {
+        html += '<div class="field-row">' +
+          '<div class="field"><label>Panjang (m)</label><input type="number" id="fPanjang" min="0" step="0.01" value="1" /></div>' +
+          '<div class="field"><label>Lebar (m)</label><input type="number" id="fLebar" min="0" step="0.01" value="1" /></div>' +
+          '<div class="field"><label>Jumlah (pcs)</label><input type="number" id="fQty" min="1" step="1" value="1" /></div>' +
+          '</div>';
+        if (proc === "indoor") {
+          html += '<div class="field-row">' +
+            '<div class="field"><label>Konsumsi tinta (ml/m²)</label><input type="number" id="fInkMl" min="0" step="0.5" value="12" /></div>' +
+            '<div class="field"><label>Harga tinta (Rp/ml)</label><input type="number" id="fInkPrice" min="0" step="10" value="150" /></div>' +
+            '</div>';
+        }
+      }
+    } else if (meta.driver === "time") {
+      html += '<div class="field-row">' +
+        '<div class="field"><label>Panjang objek (cm)</label><input type="number" id="fPanjangCm" min="0" step="0.1" value="10" /></div>' +
+        '<div class="field"><label>Lebar objek (cm)</label><input type="number" id="fLebarCm" min="0" step="0.1" value="10" /></div>' +
+        '<div class="field"><label>Jumlah (pcs)</label><input type="number" id="fQty" min="1" step="1" value="1" /></div>' +
+        '</div>' +
+        '<div class="field-row">' +
+        '<div class="field"><label>Waktu proses per pcs (menit)</label><input type="number" id="fWaktu" min="0" step="0.5" value="5" />' +
+        '<span class="subnote">Waktu proses ikut dihitung ke Total HPP.</span></div>' +
+        '<div class="field"><label>Waste / bahan terbuang (%)</label><input type="number" id="fWastePct" min="0" step="0.5" value="5" />' +
+        '<span class="subnote">Default 5% — dihitung dari luas objek/bahan. Bisa diubah manual.</span></div>' +
+        '</div>' +
+        '<div class="field-row">' +
+        '<div class="field"><label>Harga tabung laser (Rp)</label><input type="number" id="fTubePrice" min="0" step="1000" value="2850000" />' +
+        '<span class="subnote">Default acuan Rp2.850.000 — bisa diubah.</span></div>' +
+        '<div class="field"><label>Umur tabung (jam)</label><input type="number" id="fTubeHours" min="1" step="100" value="5000" />' +
+        '<span class="subnote">Default acuan 5.000 jam — bisa diubah.</span></div>' +
+        '<div class="field"><label>HPP waktu / menit</label><input type="text" id="fTimeRate" value="Rp 9,50/menit" readonly /></div>' +
+        '</div>';
+    } else if (meta.driver === "sheet") {
+      html += '<div class="field-row">' +
+        '<div class="field"><label>Jumlah lembar</label><input type="number" id="fQty" min="1" step="1" value="100" /></div>' +
+        '<div class="field"><label>Sisi cetak</label><select id="fSisi"><option value="1">1 sisi</option><option value="2">Bolak-balik</option></select></div>' +
+        '<div class="field"><label>Cakupan tinta/toner</label><select id="fCoverage"><option value="0.6">Ringan</option><option value="1" selected>Sedang</option><option value="1.5">Penuh/foto</option></select></div>' +
+        '</div>' +
+        '<div class="field-row">' +
+        '<div class="field"><label>Biaya toner/tinta dasar (Rp/lembar, cakupan sedang)</label><input type="number" id="fInkBase" min="0" step="10" value="400" /></div>' +
+        '</div>';
+    }
+
+    html += '<div class="field-row"><div class="field"><label>Margin untuk pekerjaan ini (%)</label><input type="number" id="fMargin" min="0" step="1" value="' + data.settings.margin + '" /></div></div>';
+    html += '<div id="extrasEditor" style="margin-top:4px"></div>';
+
+    form.innerHTML = html;
+    renderExtrasEditor(document.getElementById("extrasEditor"));
+
+    form.querySelectorAll("input,select").forEach(function(inp){
+      inp.addEventListener("input", renderCalcResult);
+      inp.addEventListener("change", renderCalcResult);
+    });
+
+    renderCalcResult();
   }
 
-  document.getElementById('btnHitung')?.addEventListener('click', calculate);
-}
+  function currentInputs(){
+    var proc = state.process;
+    var meta = PROCESS[proc];
+    var machineId = document.getElementById("fMachine").value;
+    var machine = data.machines.find(function(m){ return m.id === machineId; });
+    var materialSel = document.getElementById("fMaterial");
+    var material = null;
+    if (materialSel) {
+      if (proc === "laser") material = (data.acrylicReferences || []).find(function(m){ return m.id === materialSel.value; }) || null;
+      else material = data.materials.find(function(m){ return m.id === materialSel.value; }) || null;
+    }
+    var qty = Math.max(1, numOr0(document.getElementById("fQty").value) || 1);
+    var margin = numOr0(document.getElementById("fMargin").value);
+    var productName = document.getElementById("fProductName").value || "(tanpa nama)";
 
-function calculate(){
-  const type = process.value;
-  let hpp=0, harga=0, detail='';
+    var base = { machine: machine, material: material, qty: qty, extras: state.extras, margin: margin };
 
-  if(type==='cutting'){
-    const panjang = num('cut_panjang');
-    const lebar = num('cut_lebar');
-    const warna = Math.max(1, Math.round(num('cut_warna',1)));
-    const hargaPerCm2 = num('cut_harga');
-    const maskingPerCm = num('cut_masking');
-
-    const luas = panjang * lebar;
-
-    /* REVISI UTAMA:
-       HARGA JUAL = PANJANG x LEBAR x HARGA/cm²
-       JUMLAH WARNA TIDAK DIKALIKAN KE HARGA JUAL DASAR.
-    */
-    harga = luas * hargaPerCm2;
-
-    // Estimasi HPP masking berdasarkan keliling objek.
-    const keliling = 2 * (panjang + lebar);
-    const hppMasking = keliling * maskingPerCm;
-
-    // Estimasi bahan fosfor: Rp3.500 per 100 cm panjang.
-    // Dipakai berdasarkan panjang bahan yang terpakai.
-    const hppBahan = (panjang / 100) * 3500;
-
-    hpp = hppBahan + hppMasking;
-
-    detail = `
-      <div><b>Perhitungan Cutting</b></div>
-      <div>Luas = ${panjang} × ${lebar} = <b>${luas.toLocaleString('id-ID')} cm²</b></div>
-      <div>Harga jual = ${luas.toLocaleString('id-ID')} × ${rupiah(hargaPerCm2)} = <b>${rupiah(harga)}</b></div>
-      <div>Jumlah warna = ${warna} (tidak dikalikan ke harga jual dasar)</div>
-      <div>HPP bahan fosfor ≈ ${rupiah(hppBahan)}</div>
-      <div>HPP masking = keliling ${keliling.toLocaleString('id-ID')} cm × ${rupiah(maskingPerCm)} = ${rupiah(hppMasking)}</div>
-    `;
+    if (meta.driver === "area") {
+      if (proc === "cutting") {
+        base.panjangCm = numOr0(document.getElementById("fPanjangCm").value) || 0;
+        base.lebarCm = numOr0(document.getElementById("fLebarCm").value) || 0;
+        base.panjang = base.panjangCm / 100;
+        base.lebar = base.lebarCm / 100;
+        base.colors = Math.max(1, Math.round(numOr0(document.getElementById("fColors").value) || 1));
+        base.cutSell = numOr0(document.getElementById("fCutSell").value);
+        base.masking = numOr0(document.getElementById("fMasking").value);
+        base.laborCut = numOr0(document.getElementById("fLaborCut").value);
+        base.machineCut = numOr0(document.getElementById("fMachineCut").value);
+        base.materialLengthCm = 100;
+        base.materialWidthCm = 60;
+        base.overheadCut = numOr0(document.getElementById("fOverheadCut").value);
+        base.isCutting = true;
+      } else {
+        base.panjang = numOr0(document.getElementById("fPanjang").value) || 0;
+        base.lebar = numOr0(document.getElementById("fLebar").value) || 0;
+        if (proc === "indoor") {
+          base.inkMl = numOr0(document.getElementById("fInkMl").value);
+          base.inkPrice = numOr0(document.getElementById("fInkPrice").value);
+        }
+      }
+    } else if (meta.driver === "time") {
+      base.panjangCm = numOr0(document.getElementById("fPanjangCm").value) || 0;
+      base.lebarCm = numOr0(document.getElementById("fLebarCm").value) || 0;
+      base.panjang = base.panjangCm / 100;
+      base.lebar = base.lebarCm / 100;
+      base.waktuPerUnit = numOr0(document.getElementById("fWaktu").value);
+      base.wastePct = numOr0(document.getElementById("fWastePct").value);
+      base.tubePrice = numOr0(document.getElementById("fTubePrice").value) || 2850000;
+      base.tubeHours = numOr0(document.getElementById("fTubeHours").value) || 5000;
+    } else if (meta.driver === "sheet") {
+      base.sisi = numOr0(document.getElementById("fSisi").value) || 1;
+      base.coverageMult = numOr0(document.getElementById("fCoverage").value) || 1;
+      base.inkBase = numOr0(document.getElementById("fInkBase").value);
+    }
+    return { proc: proc, productName: productName, base: base };
   }
 
-  if(type==='indoor'){
-    const p=num('in_panjang'), l=num('in_lebar');
-    const area=p*l, bahan=num('in_bahan'), jual=num('in_harga');
-    hpp=area*bahan; harga=area*jual;
-    detail=`Luas ${p} × ${l} = ${area.toFixed(2)} m² · HPP ${rupiah(hpp)} · Jual ${rupiah(harga)}`;
+  function renderCalcResult(){
+    var proc = state.process;
+    var meta = PROCESS[proc];
+    var machineSel = document.getElementById("fMachine");
+    if (!machineSel) return;
+    var ctx = currentInputs();
+    if (proc === "laser") {
+      var rateEl = document.getElementById("fAcrylicRate");
+      var timeRateEl = document.getElementById("fTimeRate");
+      var selectedAc = ctx.base.material;
+      var acRate = selectedAc ? acrylicRpCm2(selectedAc.price, selectedAc.size) : 0;
+      var tRate = ctx.base.tubeHours > 0 ? ctx.base.tubePrice / (ctx.base.tubeHours * 60) : 0;
+      if (rateEl) rateEl.value = selectedAc ? "Rp " + acRate.toLocaleString("id-ID", {minimumFractionDigits:2, maximumFractionDigits:2}) + "/cm²" : "—";
+      if (timeRateEl) timeRateEl.value = "Rp " + tRate.toLocaleString("id-ID", {minimumFractionDigits:2, maximumFractionDigits:2}) + "/menit";
+    }
+    if (!ctx.base.machine) { document.getElementById("calcResult").innerHTML = ""; return; }
+    if (meta.driver !== "sheet" && (!ctx.base.panjang || !ctx.base.lebar) && meta.driver === "area") {
+      // allow zero-size warning but still compute
+    }
+    if ((meta.driver === "area" || meta.driver === "sheet") && !ctx.base.material && proc !== "laser") {
+      document.getElementById("calcResult").innerHTML = '<div class="warn-box">Pilih material terlebih dahulu.</div>';
+      return;
+    }
+
+    var result;
+    if (meta.driver === "area") result = calcArea(ctx.base);
+    else if (meta.driver === "time") result = calcTime(ctx.base);
+    else result = calcSheet(ctx.base);
+
+    var hargaJual;
+    var hargaPerUnit;
+    if (proc === "cutting") {
+      // REVISI UTAMA:
+      // harga jual Cutting = luas cm² × harga jual/cm² × qty.
+      // Jumlah warna TIDAK dikalikan ke harga jual dasar.
+      hargaJual = (ctx.base.panjangCm || 0) * (ctx.base.lebarCm || 0) * (ctx.base.cutSell || 0) * result.qty;
+      hargaPerUnit = hargaJual / result.qty;
+    } else {
+      hargaJual = result.totalHPP * (1 + (ctx.base.margin || 0) / 100);
+      hargaPerUnit = hargaJual / result.qty;
+    }
+    var laba = hargaJual - result.totalHPP;
+    var hppPerUnitFinal = result.totalHPP / result.qty;
+
+    var rowsHtml = result.rows.map(function(r){
+      return '<div class="ledger-row"><span class="lbl">' + r.label + '</span><span class="fill"></span><span class="val">' + (r.isArea ? Number(r.value).toLocaleString('id-ID', {maximumFractionDigits: 2}) + ' ' + r.displayUnit : (r.isRateDisplay ? rupiah(r.value) + ' ' + r.displayUnit : rupiah(r.value))) + '</span></div>';
+    }).join("");
+
+    var html = '<div class="ledger">' +
+      '<h3>' + esc(ctx.productName) + '</h3>' +
+      '<div class="prod-sub">' + meta.full + ' · ' + result.driverLabel + ': <span class="num">' + result.driverValue + '</span></div>' +
+      (result.machineWarn ? '<div class="warn-box">Kapasitas produksi mesin belum diisi (0). Isi di tab Mesin agar biaya mesin/tenaga kerja per satuan akurat.</div>' : '') +
+      '<div class="ledger-section-label">Rincian biaya per satuan</div>' +
+      rowsHtml +
+      '<div class="ledger-row"><span class="lbl">' + result.perUnitLabel + '</span><span class="fill"></span><span class="val"><b>' + rupiah(result.perUnit) + '</b></span></div>' +
+      '<div class="ledger-section-label">Total pekerjaan (' + result.qty + ' ' + (meta.driver==="sheet"?"lembar":"pcs") + ')</div>' +
+      '<div class="ledger-row"><span class="lbl">Subtotal produksi</span><span class="fill"></span><span class="val">' + rupiah(result.subtotal) + '</span></div>' +
+      (result.extrasTotal > 0 ? '<div class="ledger-row"><span class="lbl">Biaya tambahan/finishing</span><span class="fill"></span><span class="val">' + rupiah(result.extrasTotal) + '</span></div>' : '') +
+      '<div class="ledger-row total"><span class="lbl">Total HPP</span><span class="fill"></span><span class="val">' + rupiah(result.totalHPP) + '</span></div>' +
+      (proc === "laser" ? '<div class="ledger-row"><span class="lbl">Rumus waktu proses</span><span class="fill"></span><span class="val">' + (ctx.base.waktuPerUnit||0) + ' menit × ' + result.qty + ' pcs = ' + (result.totalMinutes||0).toFixed(1) + ' menit</span></div>' : '') +
+      (proc === "cutting" ? '<div class="ledger-row"><span class="lbl">Rumus bahan</span><span class="fill"></span><span class="val">Rp ' + (result.cuttingMaterialRateExact||0).toLocaleString('id-ID', {maximumFractionDigits:4}) + ' → Rp ' + (result.cuttingMaterialRate||0) + '/cm²</span></div>' : '') +
+      (proc === "cutting" ? '<div class="ledger-row"><span class="lbl">Rumus masking</span><span class="fill"></span><span class="val">' + (ctx.base.panjangCm||0) + ' × ' + (ctx.base.lebarCm||0) + ' × Rp ' + (ctx.base.masking||0) + '</span></div>' : '') +
+      (proc === "laser" ? '<div class="ledger-row"><span class="lbl">Rumus bahan</span><span class="fill"></span><span class="val">(' + (ctx.base.panjangCm||0) + ' × ' + (ctx.base.lebarCm||0) + ') × (1 + ' + (result.wastePct||0) + '%) = ' + (result.luasDenganWastePerPc||0).toLocaleString("id-ID", {maximumFractionDigits:2}) + ' cm² × Rp ' + (result.acrylicRate||0).toLocaleString("id-ID", {minimumFractionDigits:2, maximumFractionDigits:2}) + '/cm² = ' + rupiah(result.materialHppPerPc||0) + '/pcs</span></div>' : '') +
+      (proc === "laser" ? '<div class="ledger-row"><span class="lbl">Rumus waktu</span><span class="fill"></span><span class="val">Rp ' + (result.tubePrice||0).toLocaleString("id-ID") + ' ÷ (' + (result.tubeHours||0).toLocaleString("id-ID") + ' jam × 60) = Rp ' + (result.perMinute||0).toLocaleString("id-ID", {minimumFractionDigits:2, maximumFractionDigits:2}) + '/menit × ' + (ctx.base.waktuPerUnit||0) + ' menit = ' + rupiah(result.timeHppPerPc||0) + '/pcs</span></div>' : '') +
+      '<div class="ledger-row"><span class="lbl">HPP per unit</span><span class="fill"></span><span class="val">' + rupiah(hppPerUnitFinal) + '</span></div>' +
+      '<div class="ledger-row sell"><span class="lbl">' + (proc === "cutting" ? 'Harga jual cutting (' + rupiah(ctx.base.cutSell||0) + '/cm²)' : 'Harga jual disarankan (+' + (ctx.base.margin||0) + '%)') + '</span><span class="fill"></span><span class="val">' + rupiah(hargaJual) + '</span></div>' +
+      (proc === "cutting" ? '<div class="ledger-row"><span class="lbl">Rumus harga jual</span><span class="fill"></span><span class="val">' + (ctx.base.panjangCm||0) + ' × ' + (ctx.base.lebarCm||0) + ' × ' + rupiah(ctx.base.cutSell||0) + ' × ' + result.qty + '</span></div>' : '') +
+      (proc === "cutting" ? '<div class="ledger-row"><span class="lbl">Jumlah warna</span><span class="fill"></span><span class="val">' + (ctx.base.colors||1) + ' warna (tidak dikali)</span></div>' : '') +
+      '<div class="ledger-row"><span class="lbl">Harga jual per unit</span><span class="fill"></span><span class="val">' + rupiah(hargaPerUnit) + '</span></div>' +
+      '<div class="ledger-row profit"><span class="lbl">Estimasi laba kotor</span><span class="fill"></span><span class="val">' + rupiah(laba) + '</span></div>' +
+      '<div class="modal-actions" style="justify-content:flex-start;margin-top:16px">' +
+      '<button class="btn primary small" id="saveHistoryBtn">Simpan ke riwayat</button></div>' +
+      '</div>';
+
+    document.getElementById("calcResult").innerHTML = html;
+
+    var lastResult = { ctx: ctx, result: result, hargaJual: hargaJual, laba: laba };
+    document.getElementById("saveHistoryBtn").addEventListener("click", function(){
+      data.history.unshift({
+        id: uid("h"), date: new Date().toISOString(), process: proc,
+        name: ctx.productName, totalHPP: result.totalHPP, hargaJual: hargaJual,
+        qty: result.qty, margin: ctx.base.margin
+      });
+      if (data.history.length > 100) data.history.pop();
+      saveData();
+      showToast("Tersimpan ke riwayat.");
+      renderHistory();
+    });
   }
 
-  if(type==='laser'){
-    const p=num('lz_panjang'), l=num('lz_lebar'), bahan=num('lz_bahan'), waktu=num('lz_waktu'), jual=num('lz_harga');
-    const biayaJam=data.machines.electric+data.machines.depr+data.machines.labor;
-    const biayaMesin=(waktu/60)*biayaJam;
-    hpp=bahan+biayaMesin; harga=jual;
-    detail=`HPP bahan ${rupiah(bahan)} + biaya mesin ${rupiah(biayaMesin)} (${waktu} menit)`;
+  function esc(s){
+    var d = document.createElement("div"); d.textContent = s; return d.innerHTML;
   }
 
-  if(type==='docu'){
-    const qty=Math.max(1,num('dc_qty',1)), hppL=num('dc_hpp'), jualL=num('dc_harga');
-    hpp=qty*hppL; harga=qty*jualL;
-    detail=`${qty} lembar × HPP ${rupiah(hppL)} · ${qty} lembar × harga jual ${rupiah(jualL)}`;
+  /* ============ materials tab ============ */
+  function renderMaterials(){
+    var tbody = document.getElementById("materialsTable");
+    if (data.materials.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">Belum ada material.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.materials.map(function(m){
+      return '<tr>' +
+        '<td>' + esc(m.name) + '</td>' +
+        '<td>' + procTag(m.process) + '</td>' +
+        '<td class="num-cell">' + rupiah(m.price) + '</td>' +
+        '<td class="num-cell">' + esc(m.unit) + '</td>' +
+        '<td class="num-cell">' + (m.waste||0) + '%</td>' +
+        '<td>' + esc(m.note || "") + '</td>' +
+        '<td class="row-actions"><button class="btn small" data-edit="' + m.id + '">Ubah</button><button class="btn small danger" data-del="' + m.id + '">Hapus</button></td>' +
+        '</tr>';
+    }).join("");
+    tbody.querySelectorAll("[data-edit]").forEach(function(b){ b.addEventListener("click", function(){ openMaterialModal(b.dataset.edit); }); });
+    tbody.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click", function(){
+      data.materials = data.materials.filter(function(m){ return m.id !== b.dataset.del; });
+      saveData(); renderMaterials(); renderCalcForm();
+    }); });
+  }
+  function procTag(proc){
+    var p = PROCESS[proc] || { label: proc, color: "var(--muted)" };
+    return '<span class="proc-tag"><span class="dot" style="background:' + p.color + '"></span>' + p.label + '</span>';
   }
 
-  const margin=harga-hpp;
-  const marginPct=harga>0 ? (margin/harga)*100 : 0;
-  const name=document.getElementById('productName').value.trim() || 'Produk';
+  function openMaterialModal(id){
+    var m = id ? data.materials.find(function(x){ return x.id === id; }) : { id: null, name: "", process: "indoor", price: 0, unit: "m²", waste: 5, note: "" };
+    var body = document.getElementById("modalBody");
+    document.getElementById("modalTitle").textContent = id ? "Ubah material" : "Tambah material";
+    body.innerHTML =
+      field("Nama material", '<input type="text" id="mName" value="' + esc(m.name) + '" />') +
+      field("Proses", '<select id="mProcess">' + Object.keys(PROCESS).map(function(k){ return '<option value="'+k+'"'+(m.process===k?' selected':'')+'>'+PROCESS[k].full+'</option>'; }).join("") + '</select>') +
+      field("Harga beli (Rp)", '<input type="number" id="mPrice" min="0" step="100" value="' + m.price + '" />') +
+      field("Satuan", '<input type="text" id="mUnit" value="' + esc(m.unit) + '" placeholder="m², lembar, pcs" />') +
+      field("Susut/waste (%)", '<input type="number" id="mWaste" min="0" step="1" value="' + (m.waste||0) + '" />') +
+      field("Catatan", '<input type="text" id="mNote" value="' + esc(m.note||"") + '" />');
+    openModal(function(){
+      var obj = {
+        id: m.id || uid("mat"),
+        name: document.getElementById("mName").value || "Material",
+        process: document.getElementById("mProcess").value,
+        price: numOr0(document.getElementById("mPrice").value),
+        unit: document.getElementById("mUnit").value || "unit",
+        waste: numOr0(document.getElementById("mWaste").value),
+        note: document.getElementById("mNote").value
+      };
+      if (m.id) {
+        var idx = data.materials.findIndex(function(x){ return x.id === m.id; });
+        data.materials[idx] = obj;
+      } else data.materials.push(obj);
+      saveData(); renderMaterials(); renderCalcForm();
+    });
+  }
+  function field(label, inputHtml){
+    return '<div class="field" style="margin-bottom:12px"><label>' + label + '</label>' + inputHtml + '</div>';
+  }
 
-  document.getElementById('resultArea').innerHTML=`
-    <div class="result">
-      <h2>HPP ${esc(process.options[process.selectedIndex].text)}</h2>
-      <div class="metrics">
-        <div class="metric"><small>Produk</small><strong style="font-size:14px">${esc(name)}</strong></div>
-        <div class="metric"><small>HPP</small><strong>${rupiah(hpp)}</strong></div>
-        <div class="metric"><small>Harga jual</small><strong>${rupiah(harga)}</strong></div>
-        <div class="metric"><small>Margin</small><strong class="${margin<0?'bad':''}">${rupiah(margin)} · ${marginPct.toFixed(1)}%</strong></div>
-      </div>
-      <div class="detail">${detail}</div>
-    </div>`;
-}
+  /* ============ machines tab ============ */
+  function renderMachines(){
+    var el = document.getElementById("machinesList");
+    if (data.machines.length === 0) { el.innerHTML = '<div class="empty-state">Belum ada mesin.</div>'; return; }
+    el.innerHTML = data.machines.map(function(m){
+      var mh = machineHourlyCost(m);
+      return '<div class="machine-card">' +
+        '<div class="mhead"><div><span class="name">' + esc(m.name) + '</span> ' + procTag(m.process) + '</div>' +
+        '<div class="row-actions"><button class="btn small" data-edit="' + m.id + '">Ubah</button><button class="btn small danger" data-del="' + m.id + '">Hapus</button></div></div>' +
+        '<div class="machine-cost-line">' +
+        '<span>Penyusutan/jam: <b>' + rupiah(mh.depreciation) + '</b></span>' +
+        '<span>Listrik/jam: <b>' + rupiah(mh.electricity) + '</b></span>' +
+        '<span>Perawatan/jam: <b>' + rupiah(mh.maintenance) + '</b></span>' +
+        (mh.extra ? '<span>Lain-lain/jam: <b>' + rupiah(mh.extra) + '</b></span>' : '') +
+        '<span>Total biaya mesin/jam: <b>' + rupiah(mh.total) + '</b></span>' +
+        (m.speed > 0 ? '<span>Kapasitas: <b>' + m.speed + '</b> ' + (PROCESS[m.process].driver==="sheet"?"lembar/jam":"m²/jam") + '</span>' : (PROCESS[m.process].driver!=="time" ? '<span style="color:var(--bad)">Kapasitas belum diisi</span>' : '')) +
+        '</div></div>';
+    }).join("");
+    el.querySelectorAll("[data-edit]").forEach(function(b){ b.addEventListener("click", function(){ openMachineModal(b.dataset.edit); }); });
+    el.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click", function(){
+      data.machines = data.machines.filter(function(m){ return m.id !== b.dataset.del; });
+      saveData(); renderMachines(); renderCalcForm();
+    }); });
+  }
 
-/* ---------- MATERIAL ---------- */
-function renderMaterials(){
-  document.getElementById('materialTable').innerHTML = data.materials.length ?
-    data.materials.map((m,i)=>`
-      <tr><td>${esc(m.name)}</td><td class="num">${rupiah(m.price)}</td><td>${esc(m.unit)}</td>
-      <td><button class="btn btn-ghost" onclick="deleteMaterial(${i})">Hapus</button></td></tr>`).join('') :
-    '<tr><td colspan="4" class="empty">Belum ada material.</td></tr>';
-}
-document.getElementById('addMat').addEventListener('click',()=>{
-  const name=document.getElementById('matName').value.trim();
-  if(!name){alert('Isi nama material.');return}
-  data.materials.push({name,price:num('matPrice'),unit:document.getElementById('matUnit').value.trim()||'-'});
-  saveData();renderMaterials();
-  document.getElementById('matName').value='';
-});
-function deleteMaterial(i){data.materials.splice(i,1);saveData();renderMaterials()}
+  function openMachineModal(id){
+    var m = id ? data.machines.find(function(x){ return x.id === id; }) : {
+      id: null, name: "", process: "indoor", price: 0, usefulYears: 5, hoursPerDay: 8,
+      daysPerMonth: 26, wattage: 0, elecRate: 1500, maintenance: 0, extraPerHour: 0, speed: 0
+    };
+    var body = document.getElementById("modalBody");
+    document.getElementById("modalTitle").textContent = id ? "Ubah mesin" : "Tambah mesin";
+    body.innerHTML =
+      field("Nama mesin", '<input type="text" id="xName" value="' + esc(m.name) + '" />') +
+      field("Proses", '<select id="xProcess">' + Object.keys(PROCESS).map(function(k){ return '<option value="'+k+'"'+(m.process===k?' selected':'')+'>'+PROCESS[k].full+'</option>'; }).join("") + '</select>') +
+      field("Harga beli mesin (Rp)", '<input type="number" id="xPrice" min="0" step="10000" value="' + m.price + '" />') +
+      field("Umur ekonomis (tahun)", '<input type="number" id="xYears" min="1" step="1" value="' + m.usefulYears + '" />') +
+      field("Jam kerja / hari", '<input type="number" id="xHoursDay" min="1" step="1" value="' + m.hoursPerDay + '" />') +
+      field("Hari kerja / bulan", '<input type="number" id="xDaysMonth" min="1" step="1" value="' + m.daysPerMonth + '" />') +
+      field("Daya listrik (watt)", '<input type="number" id="xWatt" min="0" step="10" value="' + m.wattage + '" />') +
+      field("Tarif listrik (Rp/kWh)", '<input type="number" id="xElecRate" min="0" step="10" value="' + m.elecRate + '" />') +
+      field("Biaya perawatan / bulan (Rp)", '<input type="number" id="xMaint" min="0" step="10000" value="' + m.maintenance + '" />') +
+      field("Biaya operasional lain / jam (Rp)", '<input type="number" id="xExtra" min="0" step="500" value="' + (m.extraPerHour||0) + '" /><span class="subnote">Mis. gas asist laser, consumable lain</span>') +
+      field("Kapasitas produksi (satuan/jam)", '<input type="number" id="xSpeed" min="0" step="0.5" value="' + (m.speed||0) + '" /><span class="subnote">Kosongkan/0 untuk Laser (waktu diisi langsung per pekerjaan)</span>');
+    openModal(function(){
+      var obj = {
+        id: m.id || uid("mch"),
+        name: document.getElementById("xName").value || "Mesin",
+        process: document.getElementById("xProcess").value,
+        price: numOr0(document.getElementById("xPrice").value),
+        usefulYears: numOr0(document.getElementById("xYears").value) || 1,
+        hoursPerDay: numOr0(document.getElementById("xHoursDay").value) || 1,
+        daysPerMonth: numOr0(document.getElementById("xDaysMonth").value) || 1,
+        wattage: numOr0(document.getElementById("xWatt").value),
+        elecRate: numOr0(document.getElementById("xElecRate").value),
+        maintenance: numOr0(document.getElementById("xMaint").value),
+        extraPerHour: numOr0(document.getElementById("xExtra").value),
+        speed: numOr0(document.getElementById("xSpeed").value)
+      };
+      if (m.id) {
+        var idx = data.machines.findIndex(function(x){ return x.id === m.id; });
+        data.machines[idx] = obj;
+      } else data.machines.push(obj);
+      saveData(); renderMachines(); renderCalcForm();
+    });
+  }
 
-/* ---------- MESIN ---------- */
-function renderMachines(){
-  document.getElementById('machineSummary').innerHTML=`
-    <div class="formula">Listrik: ${rupiah(data.machines.electric)}/jam</div>
-    <div class="formula">Penyusutan: ${rupiah(data.machines.depr)}/jam</div>
-    <div class="formula">Tenaga kerja: ${rupiah(data.machines.labor)}/jam</div>
-    <div class="formula"><b>Total biaya mesin + tenaga kerja: ${rupiah(data.machines.electric+data.machines.depr+data.machines.labor)}/jam</b></div>`;
-}
-document.getElementById('saveMachine').addEventListener('click',()=>{
-  data.machines={electric:num('electric'),depr:num('depr'),labor:num('labor')};
-  saveData();renderMachines();alert('Biaya mesin tersimpan.');
-});
-
-/* ---------- REFERENSI ---------- */
-function renderReferences(){
-  document.getElementById('referenceTable').innerHTML=data.references.length ?
-    data.references.map((r,i)=>`
-      <tr><td>${esc(r.name)}</td><td class="num">${rupiah(r.price)}</td><td>${esc(r.unit)}</td>
-      <td><button class="btn btn-ghost" onclick="deleteReference(${i})">Hapus</button></td></tr>`).join('') :
-    '<tr><td colspan="4" class="empty">Belum ada harga referensi.</td></tr>';
-}
-document.getElementById('addRef').addEventListener('click',()=>{
-  const name=document.getElementById('refName').value.trim();
-  if(!name){alert('Isi nama jasa.');return}
-  data.references.push({name,price:num('refPrice'),unit:document.getElementById('refUnit').value.trim()||'-'});
-  saveData();renderReferences();
-  document.getElementById('refName').value='';
-});
-function deleteReference(i){data.references.splice(i,1);saveData();renderReferences()}
-
-/* ---------- RESET ---------- */
-document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(confirm('Reset semua data ke data awal?')){
-    data=structuredClone(defaultData);
+  /* ============ settings tab ============ */
+  function renderSettings(){
+    document.getElementById("setLaborRate").value = data.settings.laborRate;
+    document.getElementById("setMargin").value = data.settings.margin;
+    document.getElementById("setRent").value = data.settings.rent;
+    document.getElementById("setOther").value = data.settings.other;
+    document.getElementById("setHours").value = data.settings.hours;
+    updateOverheadPreview();
+  }
+  function updateOverheadPreview(){
+    var s = {
+      rent: numOr0(document.getElementById("setRent").value),
+      other: numOr0(document.getElementById("setOther").value),
+      hours: numOr0(document.getElementById("setHours").value) || 1
+    };
+    document.getElementById("overheadPreview").textContent = rupiah(overheadPerHour(s));
+  }
+  ["setRent","setOther","setHours"].forEach(function(id){
+    document.getElementById(id).addEventListener("input", updateOverheadPreview);
+  });
+  document.getElementById("saveSettingsBtn").addEventListener("click", function(){
+    data.settings = {
+      laborRate: numOr0(document.getElementById("setLaborRate").value),
+      margin: numOr0(document.getElementById("setMargin").value),
+      rent: numOr0(document.getElementById("setRent").value),
+      other: numOr0(document.getElementById("setOther").value),
+      hours: numOr0(document.getElementById("setHours").value) || 1
+    };
     saveData();
-    renderMaterials();renderMachines();renderReferences();renderForm();
-    alert('Data berhasil direset.');
-  }
-});
+    showToast("Pengaturan disimpan.");
+    renderCalcForm();
+  });
 
-renderMachines();
-renderMaterials();
-renderReferences();
+  /* ============ benchmarks tab ============ */
+  function renderBenchmarks(){
+    var tbody = document.getElementById("benchmarksTable");
+    if (data.benchmarks.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state">Belum ada data referensi.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.benchmarks.map(function(b){
+      return '<tr>' +
+        '<td>' + esc(b.name) + '</td>' +
+        '<td class="num-cell">' + rupiah(b.p1) + '</td>' +
+        '<td class="num-cell">' + rupiah(b.p2) + '</td>' +
+        '<td class="num-cell">' + rupiah(b.p3) + '</td>' +
+        '<td>' + esc(b.note || "") + '</td>' +
+        '<td class="row-actions"><button class="btn small" data-edit="' + b.id + '">Ubah</button><button class="btn small danger" data-del="' + b.id + '">Hapus</button></td>' +
+        '</tr>';
+    }).join("");
+    tbody.querySelectorAll("[data-edit]").forEach(function(b){ b.addEventListener("click", function(){ openBenchmarkModal(b.dataset.edit); }); });
+    tbody.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click", function(){
+      data.benchmarks = data.benchmarks.filter(function(x){ return x.id !== b.dataset.del; });
+      saveData(); renderBenchmarks();
+    }); });
+  }
+  function openBenchmarkModal(id){
+    var b = id ? data.benchmarks.find(function(x){ return x.id === id; }) : { id: null, name: "", p1: 0, p2: 0, p3: 0, note: "" };
+    var body = document.getElementById("modalBody");
+    document.getElementById("modalTitle").textContent = id ? "Ubah referensi" : "Tambah referensi";
+    body.innerHTML =
+      field("Nama material/produk", '<input type="text" id="bName" value="' + esc(b.name) + '" />') +
+      field("Harga 1–100", '<input type="number" id="bP1" min="0" step="100" value="' + b.p1 + '" />') +
+      field("Harga 101–500", '<input type="number" id="bP2" min="0" step="100" value="' + b.p2 + '" />') +
+      field("Harga ≥501", '<input type="number" id="bP3" min="0" step="100" value="' + b.p3 + '" />') +
+      field("Catatan", '<input type="text" id="bNote" value="' + esc(b.note||"") + '" />');
+    openModal(function(){
+      var obj = {
+        id: b.id || uid("bm"),
+        name: document.getElementById("bName").value || "Referensi",
+        p1: numOr0(document.getElementById("bP1").value),
+        p2: numOr0(document.getElementById("bP2").value),
+        p3: numOr0(document.getElementById("bP3").value),
+        note: document.getElementById("bNote").value
+      };
+      if (b.id) {
+        var idx = data.benchmarks.findIndex(function(x){ return x.id === b.id; });
+        data.benchmarks[idx] = obj;
+      } else data.benchmarks.push(obj);
+      saveData(); renderBenchmarks();
+    });
+  }
+
+  /* ============ acrylic reference tab ============ */
+  function acrylicArea(size){
+    var parts = String(size).split("x").map(Number);
+    return (parts[0] || 0) * (parts[1] || 0);
+  }
+  function acrylicRpCm2(price,size){
+    var area = acrylicArea(size);
+    return area ? Number(price || 0) / area : 0;
+  }
+  function renderAcrylic(){
+    var tbody = document.getElementById("acrylicTable");
+    if (!tbody) return;
+    if (!data.acrylicReferences || data.acrylicReferences.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state">Belum ada data referensi acrylic.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.acrylicReferences.map(function(a){
+      return '<tr>' +
+        '<td><b>' + esc(a.type) + ' ' + esc(a.thickness) + 'mm</b></td>' +
+        '<td>' + esc(a.size.replace("x"," × ")) + ' cm</td>' +
+        '<td class="num-cell">' + rupiah(a.price) + '</td>' +
+        '<td class="num-cell">' + acrylicRpCm2(a.price,a.size).toLocaleString("id-ID", {minimumFractionDigits:2, maximumFractionDigits:2}) + '</td>' +
+        '<td class="row-actions"><button class="btn small" data-ac-edit="' + a.id + '">Edit</button><button class="btn small danger" data-ac-del="' + a.id + '">Hapus</button></td>' +
+        '</tr>';
+    }).join("");
+    tbody.querySelectorAll("[data-ac-edit]").forEach(function(b){ b.addEventListener("click", function(){ openAcrylicModal(b.dataset.acEdit); }); });
+    tbody.querySelectorAll("[data-ac-del]").forEach(function(b){ b.addEventListener("click", function(){
+      if (!confirm("Hapus data referensi acrylic ini?")) return;
+      data.acrylicReferences = data.acrylicReferences.filter(function(x){ return x.id !== b.dataset.acDel; });
+      saveData(); renderAcrylic();
+    }); });
+  }
+  function openAcrylicModal(id){
+    var a = id ? data.acrylicReferences.find(function(x){ return x.id === id; }) : {id:null,type:"",thickness:2,size:"100x200",price:0};
+    var body = document.getElementById("modalBody");
+    document.getElementById("modalTitle").textContent = id ? "Edit referensi acrylic" : "Tambah jenis bahan acrylic";
+    body.innerHTML =
+      field("Jenis", '<input type="text" id="aType" value="' + esc(a.type) + '" placeholder="Bening / Susu / Warna" />') +
+      field("Tebal", '<select id="aThickness"><option value="2">2 mm</option><option value="3">3 mm</option><option value="4">4 mm</option><option value="5">5 mm</option></select>') +
+      field("Ukuran", '<select id="aSize"><option value="100x200">100 × 200 cm</option><option value="122x244">122 × 244 cm</option></select>') +
+      field("Harga lembar (Rp)", '<input type="number" id="aPrice" min="0" step="1000" value="' + Number(a.price || 0) + '" />');
+    document.getElementById("aThickness").value = String(a.thickness);
+    document.getElementById("aSize").value = a.size;
+    openModal(function(){
+      var obj = {id: a.id || uid("ac"), type: document.getElementById("aType").value.trim() || "Acrylic", thickness: numOr0(document.getElementById("aThickness").value), size: document.getElementById("aSize").value, price: numOr0(document.getElementById("aPrice").value)};
+      if (a.id) {
+        var idx = data.acrylicReferences.findIndex(function(x){ return x.id === a.id; });
+        data.acrylicReferences[idx] = obj;
+      } else data.acrylicReferences.push(obj);
+      saveData(); renderAcrylic();
+    });
+  }
+
+  /* ============ history tab ============ */
+  function renderHistory(){
+    var el = document.getElementById("historyList");
+    if (data.history.length === 0) { el.innerHTML = '<div class="empty-state">Belum ada riwayat perhitungan.</div>'; return; }
+    el.innerHTML = data.history.map(function(h){
+      var d = new Date(h.date);
+      var dateStr = d.toLocaleDateString("id-ID", { day:"numeric", month:"short", year:"numeric" }) + " " + d.toLocaleTimeString("id-ID", {hour:"2-digit",minute:"2-digit"});
+      return '<div class="history-item">' +
+        '<div><div class="hname">' + esc(h.name) + '</div><div class="hmeta">' + procTag(h.process) + ' · ' + dateStr + ' · qty ' + h.qty + ' · margin ' + h.margin + '%</div></div>' +
+        '<div style="text-align:right"><div class="hval">' + rupiah(h.hargaJual) + '</div><div class="hmeta">HPP ' + rupiah(h.totalHPP) + '</div></div>' +
+        '<button class="btn small danger" data-del="' + h.id + '">Hapus</button>' +
+        '</div>';
+    }).join("");
+    el.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click", function(){
+      data.history = data.history.filter(function(h){ return h.id !== b.dataset.del; });
+      saveData(); renderHistory();
+    }); });
+  }
+  document.getElementById("clearHistoryBtn").addEventListener("click", function(){
+    if (!confirm("Kosongkan seluruh riwayat perhitungan?")) return;
+    data.history = []; saveData(); renderHistory();
+  });
+
+  /* ============ modal helpers ============ */
+  var currentSaveHandler = null;
+  function openModal(onSave){
+    currentSaveHandler = onSave;
+    document.getElementById("modalOverlay").classList.remove("hidden");
+  }
+  function closeModal(){
+    document.getElementById("modalOverlay").classList.add("hidden");
+    currentSaveHandler = null;
+  }
+  document.getElementById("cancelModal").addEventListener("click", closeModal);
+  document.getElementById("modalOverlay").addEventListener("click", function(e){
+    if (e.target.id === "modalOverlay") closeModal();
+  });
+  document.getElementById("saveModal").addEventListener("click", function(){
+    if (currentSaveHandler) currentSaveHandler();
+    closeModal();
+    showToast("Tersimpan.");
+  });
+
+  /* ============ top bar actions ============ */
+  document.getElementById("addMaterialBtn").addEventListener("click", function(){ openMaterialModal(null); });
+  document.getElementById("addMachineBtn").addEventListener("click", function(){ openMachineModal(null); });
+  document.getElementById("addBenchmarkBtn").addEventListener("click", function(){ openBenchmarkModal(null); });
+  document.getElementById("addAcrylicBtn").addEventListener("click", function(){ openAcrylicModal(null); });
+
+  document.getElementById("btnReset").addEventListener("click", function(){
+    if (!confirm("Reset seluruh data ke data awal? Perubahan yang belum diekspor akan hilang.")) return;
+    data = defaultData();
+    saveData();
+    renderAll();
+    showToast("Data direset ke awal.");
+  });
+
+  document.getElementById("btnExport").addEventListener("click", async function(){
+    var json = JSON.stringify(data, null, 2);
+    var filename = "hpp-elquirazh-" + new Date().toISOString().slice(0,10) + ".json";
+    try {
+      var downloads = window.claude && window.claude.use ? await window.claude.use("downloads") : null;
+      if (downloads) {
+        await downloads.save({ filename: filename, data: json });
+        showToast("File ekspor siap disimpan.");
+        return;
+      }
+    } catch (e) { /* fall through */ }
+    try {
+      var blob = new Blob([json], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(url);
+    } catch (e) { showToast("Ekspor tidak didukung di perangkat ini."); }
+  });
+
+  document.getElementById("btnImport").addEventListener("click", function(){
+    document.getElementById("fileImport").click();
+  });
+  document.getElementById("fileImport").addEventListener("change", function(e){
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        var parsed = JSON.parse(reader.result);
+        if (!parsed.settings || !parsed.machines || !parsed.materials) throw new Error("format tidak sesuai");
+        if (!parsed.benchmarks) parsed.benchmarks = [];
+        if (!parsed.history) parsed.history = [];
+        data = parsed;
+        saveData();
+        renderAll();
+        showToast("Data berhasil diimpor.");
+      } catch (err) { showToast("Gagal impor: file tidak valid."); }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  /* ============ init ============ */
+  function renderAll(){
+    renderProcessPicker();
+    renderCalcForm();
+    renderMaterials();
+    renderMachines();
+    renderSettings();
+    renderBenchmarks();
+    renderAcrylic();
+    renderHistory();
+  }
+  renderAll();
+})();
 </script>
 </body>
 </html>
